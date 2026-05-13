@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Rotas PRO</title>
+
+    <style>
+        :root {
+            --bg: #050a14;
+            --card: #0b1220;
+            --card2: #111b2c;
+            --border: #1a2a44;
+            --text: #e8edf5;
+            --text2: #8ea1c0;
+            --azul: #1e5fcf;
+            --azul-vivo: #2d7af0;
+            --azul-claro: #60a5fa;
+            --laranja: #f59e0b;
+            --verde: #10b981;
+            --vermelho: #ef4444;
+            --input-bg: #0f1a2b;
+            --radius: 14px;
+            --radius-sm: 10px;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            background-image:
+                radial-gradient(ellipse at 15% 10%, #0c1f3d 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 90%, #0a1628 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 50%, #030814 0%, #020510 100%);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 28px 22px 50px;
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 18px;
+            margin-bottom: 32px;
+            padding: 20px 24px;
+            background: linear-gradient(135deg, #0d1a30 0%, #0b1526 100%);
+            border: 1px solid #1e3a60;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 20px rgba(30, 95, 207, 0.25);
+        }
+        .top h1 {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 28px;
+            padding: 18px 20px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-card);
+        }
+        .toolbar label {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--azul-claro);
+            margin-right: 2px;
+            font-weight: 600;
+        }
+
+        input[type="date"],
+        input[type="number"] {
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            border: 1px solid #1e3a60;
+            background: var(--input-bg);
+            color: var(--text);
+            font-size: 0.9rem;
+            font-family: inherit;
+            outline: none;
+        }
+        input[type="date"] {
+            min-width: 150px;
+        }
+        input[type="number"] {
+            width: 100px;
+            text-align: center;
+            font-weight: 600;
+        }
+        input:focus {
+            border-color: var(--azul-vivo);
+            box-shadow: 0 0 0 3px rgba(45, 122, 240, 0.2);
+        }
+
+        button {
+            font-family: inherit;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 10px 18px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.85rem;
+        }
+        button:active {
+            transform: scale(0.96);
+        }
+
+        .btn-ghost {
+            background: #0f1a2b;
+            color: #b0c8e8;
+            border: 1px solid #1e3a60;
+        }
+        .btn-ghost:hover {
+            background: #15233a;
+            border-color: #2d7af0;
+            color: #fff;
+        }
+        .btn-danger {
+            background: #1f0d0d;
+            color: #fca5a5;
+            border: 1px solid #4a2020;
+        }
+        .btn-danger:hover {
+            background: #2d1212;
+            border-color: #7c2020;
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            color: #1a1000;
+            font-weight: 700;
+            box-shadow: 0 2px 14px rgba(245, 158, 11, 0.35);
+        }
+        .btn-gold:hover {
+            box-shadow: 0 6px 24px rgba(245, 158, 11, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+        @media (max-width: 650px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: linear-gradient(180deg, #0e1727 0%, #0a1220 100%);
+            border: 1px solid #1a3050;
+            border-radius: var(--radius);
+            padding: 22px 20px;
+            box-shadow: var(--shadow-card);
+            transition: var(--transition);
+        }
+        .card:hover {
+            border-color: #2d7af0;
+            box-shadow: 0 8px 35px rgba(0, 0, 0, 0.7);
+        }
+        .card h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card .dia-badge {
+            display: inline-block;
+            font-size: 0.73rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #8ea1c0;
+            background: #0f1a2b;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 18px;
+            border: 1px solid #1e3a60;
+        }
+
+        .counter-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            gap: 10px;
+        }
+        .counter-row .label {
+            font-weight: 600;
+            font-size: 0.92rem;
+            min-width: 80px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: #c8d8f0;
+        }
+        .avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        .avatar-ariel {
+            background: #0d2240;
+            color: #60a5fa;
+            border: 2px solid #2d7af0;
+        }
+        .avatar-gordinho {
+            background: #2d2006;
+            color: #fbbf24;
+            border: 2px solid #f59e0b;
+        }
+
+        .btn-sm {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            font-weight: 700;
+            justify-content: center;
+        }
+        .btn-minus {
+            background: #121b28;
+            color: #ef4444;
+            border: 1px solid #3b1515;
+        }
+        .btn-plus {
+            background: #121b28;
+            color: #10b981;
+            border: 1px solid #153b2a;
+        }
+
+        input.numero {
+            width: 60px;
+            height: 40px;
+            text-align: center;
+            background: var(--input-bg);
+            color: #fff;
+            border: 1px solid #1e3a60;
+            border-radius: var(--radius-sm);
+            font-size: 1.05rem;
+            font-weight: 700;
+            font-family: inherit;
+            outline: none;
+        }
+        input.numero:focus {
+            border-color: var(--azul-vivo);
+            box-shadow: 0 0 0 3px rgba(45, 122, 240, 0.25);
+        }
+
+        .km-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 14px;
+        }
+        .km-row label {
+            font-size: 0.8rem;
+            color: var(--text2);
+            white-space: nowrap;
+        }
+
+        .summary-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+        @media (max-width: 750px) {
+            .summary-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        .summary-card {
+            background: var(--card);
+            border: 1px solid #1a3050;
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow-card);
+        }
+        .summary-card h2 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #8ea1c0;
+            margin-bottom: 12px;
+        }
+        .valor-principal {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+        .sub-info {
+            font-size: 0.85rem;
+            color: #7a90b8;
+            margin-top: 8px;
+        }
+        .positivo {
+            color: #10b981;
+        }
+        .negativo {
+            color: #ef4444;
+        }
+        .sugestao-box {
+            background: #0d1a2c;
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-top: 14px;
+            border-left: 4px solid #2d7af0;
+            color: #b8cde8;
+            font-size: 0.85rem;
+        }
+
+        .card-tabela {
+            background: var(--card);
+            border: 1px solid #1a3050;
+            border-radius: var(--radius);
+            padding: 20px;
+            overflow-x: auto;
+            box-shadow: var(--shadow-card);
+        }
+        .card-tabela h2 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #8ea1c0;
+            margin-bottom: 16px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        thead th {
+            padding: 10px 12px;
+            text-align: center;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: #8ea1c0;
+            border-bottom: 2px solid #1e3a60;
+            background: #0b1625;
+        }
+        tbody td {
+            padding: 10px 12px;
+            text-align: center;
+            border-bottom: 1px solid #121f35;
+        }
+        tfoot td,
+        tfoot th {
+            padding: 12px;
+            text-align: center;
+            font-weight: 700;
+            border-top: 2px solid #1e3a60;
+            background: #0b1625;
+        }
+        .badge-dia {
+            font-weight: 600;
+            color: #a0b8d8;
+        }
+        .badge-data {
+            color: #5c7090;
+            font-size: 0.8rem;
+            font-family: monospace;
+        }
+
+        .footer-credits {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #2d4a6a;
+            margin-top: 36px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="top">
+            <h1>🚛 Controle de Rotas</h1>
+            <button class="btn-gold" onclick="fecharSemanaAnterior()">📦 Fechar Última Semana</button>
+        </div>
+
+        <div class="toolbar">
+            <label>📅 Data</label>
+            <input type="date" id="dataManual">
+            <button class="btn-ghost" onclick="usarHoje()">⏺️ Hoje</button>
+            <button class="btn-ghost" onclick="usarOntem()">⬅️ Ontem</button>
+            <button class="btn-danger" onclick="zerarDia()">🗑️ Zerar Dia</button>
+        </div>
+
+        <div class="grid" id="rotas"></div>
+
+        <div class="card" id="km-diario" style="margin-bottom: 28px;"></div>
+
+        <div class="summary-row">
+            <div class="summary-card" id="resumo"></div>
+            <div class="summary-card" id="acumulado"></div>
+        </div>
+
+        <div class="card-tabela">
+            <h2>📋 Histórico da Semana</h2>
+            <div id="historico"></div>
+        </div>
+
+        <div class="footer-credits">🚚 Controle de Rotas PRO &copy; 2026</div>
+    </div>
+
+    <script>
+        (function() {
+            const ROTAS = ["+40 km"];
+            const DIAS = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
+
+            function formatarData(d) {
+                return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+            }
+            function hoje() { return formatarData(new Date()); }
+            function ontem() {
+                let d = new Date();
+                d.setDate(d.getDate() - 1);
+                return formatarData(d);
+            }
+            function ultimoSabado(dataRef) {
+                let d = new Date(dataRef + "T00:00");
+                let ds = d.getDay();
+                let dif = ds === 6 ? 0 : -(ds + 1);
+                d.setDate(d.getDate() + dif);
+                return formatarData(d);
+            }
+            window.usarHoje = () => { document.getElementById("dataManual").value = hoje();
+                render(); };
+            window.usarOntem = () => { document.getElementById("dataManual").value = ontem();
+                render(); };
+            function getData() { return document.getElementById("dataManual").value || hoje(); }
+            function nomeDia(d) { return DIAS[new Date(d + "T00:00").getDay()]; }
+
+            let banco;
+            try {
+                banco = JSON.parse(localStorage.getItem("banco_rotas_km")) || {
+                    historico: {},
+                    acumulado: 0,
+                    ultimaSemanaFechada: null
+                };
+            } catch (e) {
+                banco = { historico: {}, acumulado: 0, ultimaSemanaFechada: null };
+            }
+
+            function salvar() { localStorage.setItem("banco_rotas_km", JSON.stringify(banco)); }
+
+            function initDia(d) {
+                if (!banco.historico[d]) {
+                    banco.historico[d] = { rotas: {}, km: { Ariel: 0, Gordinho: 0 } };
+                }
+                ROTAS.forEach(r => {
+                    if (!banco.historico[d].rotas[r]) {
+                        banco.historico[d].rotas[r] = { Ariel: 0, Gordinho: 0 };
+                    }
+                });
+                if (!banco.historico[d].km) {
+                    banco.historico[d].km = { Ariel: 0, Gordinho: 0 };
+                }
+            }
+
+            window.alterar = function(rota, pessoa, valor) {
+                let d = getData();
+                initDia(d);
+                banco.historico[d].rotas[rota][pessoa] += valor;
+                if (banco.historico[d].rotas[rota][pessoa] < 0) banco.historico[d].rotas[rota][pessoa] = 0;
+                salvar();
+                render();
+            };
+            window.editarDireto = function(rota, pessoa, input) {
+                let d = getData();
+                initDia(d);
+                let v = parseInt(input.value) || 0;
+                if (v < 0) v = 0;
+                banco.historico[d].rotas[rota][pessoa] = v;
+                salvar();
+                render();
+            };
+            window.salvarKm = function(pessoa, input) {
+                let d = getData();
+                initDia(d);
+                let v = parseFloat(input.value) || 0;
+                if (v < 0) v = 0;
+                banco.historico[d].km[pessoa] = v;
+                salvar();
+                render();
+            };
+            window.zerarDia = function() {
+                let d = getData();
+                if (confirm("Zerar todos os dados (rotas e km) deste dia?")) {
+                    delete banco.historico[d];
+                    salvar();
+                    render();
+                }
+            };
+
+            window.fecharSemanaAnterior = function() {
+                let dataAtual = getData();
+                let sabadoPassado = ultimoSabado(dataAtual);
+                if (banco.ultimaSemanaFechada === sabadoPassado) {
+                    alert("Esta semana já foi fechada.");
+                    return;
+                }
+                let datasParaFechar = Object.keys(banco.historico).filter(d => d <= sabadoPassado);
+                if (datasParaFechar.length === 0) {
+                    alert("Nenhum dado até o último sábado (" + sabadoPassado + ").");
+                    return;
+                }
+                let totalA = 0,
+                    totalG = 0;
+                datasParaFechar.forEach(d => {
+                    ROTAS.forEach(r => {
+                        totalA += banco.historico[d].rotas[r]?.Ariel || 0;
+                        totalG += banco.historico[d].rotas[r]?.Gordinho || 0;
+                    });
+                });
+                let saldo = totalA - totalG;
+                if (confirm(`Fechar semana até ${sabadoPassado}?\n\nEntregas: Ariel ${totalA} x Gordinho ${totalG}\nSaldo: ${saldo >= 0 ? 'Ariel +' + saldo : 'Gordinho +' + Math.abs(saldo)}\n\nO saldo será movido para o acumulado e o histórico da semana será apagado.`)) {
+                    banco.acumulado += saldo;
+                    datasParaFechar.forEach(d => delete banco.historico[d]);
+                    banco.ultimaSemanaFechada = sabadoPassado;
+                    salvar();
+                    render();
+                }
+            };
+
+            function render() {
+                let dataAtual = getData();
+                initDia(dataAtual);
+
+                // Card de rota +40 km
+                let a = banco.historico[dataAtual].rotas["+40 km"].Ariel || 0;
+                let g = banco.historico[dataAtual].rotas["+40 km"].Gordinho || 0;
+                document.getElementById("rotas").innerHTML = `
+                <div class="card" style="border-top: 4px solid #f59e0b;">
+                    <h2>📍 Rota +40 km</h2>
+                    <span class="dia-badge">📆 ${nomeDia(dataAtual)}</span>
+                    <div class="counter-row">
+                        <span class="label"><span class="avatar avatar-ariel">A</span> Ariel</span>
+                        <button class="btn-sm btn-minus" onclick="alterar('+40 km','Ariel',-1)">−</button>
+                        <input class="numero" value="${a}" onchange="editarDireto('+40 km','Ariel',this)">
+                        <button class="btn-sm btn-plus" onclick="alterar('+40 km','Ariel',1)">+</button>
+                    </div>
+                    <div class="counter-row">
+                        <span class="label"><span class="avatar avatar-gordinho">G</span> Gordinho</span>
+                        <button class="btn-sm btn-minus" onclick="alterar('+40 km','Gordinho',-1)">−</button>
+                        <input class="numero" value="${g}" onchange="editarDireto('+40 km','Gordinho',this)">
+                        <button class="btn-sm btn-plus" onclick="alterar('+40 km','Gordinho',1)">+</button>
+                    </div>
+                </div>`;
+
+                // Card de quilometragem total do dia
+                let kmA = banco.historico[dataAtual].km.Ariel || 0;
+                let kmG = banco.historico[dataAtual].km.Gordinho || 0;
+                document.getElementById("km-diario").innerHTML = `
+                <h2>🚛 Quilometragem Total do Dia</h2>
+                <div style="display: flex; flex-wrap: wrap; gap: 24px;">
+                    <div style="flex:1; min-width:200px;">
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+                            <span class="avatar avatar-ariel">A</span>
+                            <span style="font-weight:600;">Ariel</span>
+                        </div>
+                        <label>Km total:</label>
+                        <input type="number" value="${kmA}" onchange="salvarKm('Ariel',this)" style="width:110px;">
+                    </div>
+                    <div style="flex:1; min-width:200px;">
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+                            <span class="avatar avatar-gordinho">G</span>
+                            <span style="font-weight:600;">Gordinho</span>
+                        </div>
+                        <label>Km total:</label>
+                        <input type="number" value="${kmG}" onchange="salvarKm('Gordinho',this)" style="width:110px;">
+                    </div>
+                </div>`;
+
+                // Tabela de histórico
+                let dias = Object.keys(banco.historico).sort();
+                let totalEntA = 0,
+                    totalEntG = 0,
+                    totalKmA = 0,
+                    totalKmG = 0;
+                let tabela =
+                    `<table><thead><tr><th>Dia</th><th>Data</th><th>Entregas Ariel</th><th>Entregas Gordinho</th><th>Saldo Entregas</th><th>Km Ariel</th><th>Km Gordinho</th><th>Dif. Km</th></tr></thead><tbody>`;
+                if (dias.length === 0) {
+                    tabela +=
+                        `<tr><td colspan="8" style="color:#5c7090; padding:24px;">Nenhum registro na semana</td></tr>`;
+                } else {
+                    dias.forEach(d => {
+                        let ea = 0,
+                            eg = 0;
+                        ROTAS.forEach(r => {
+                            ea += banco.historico[d].rotas[r]?.Ariel || 0;
+                            eg += banco.historico[d].rotas[r]?.Gordinho || 0;
+                        });
+                        let ka = banco.historico[d].km?.Ariel || 0;
+                        let kg = banco.historico[d].km?.Gordinho || 0;
+                        totalEntA += ea;
+                        totalEntG += eg;
+                        totalKmA += ka;
+                        totalKmG += kg;
+                        let saldoEnt = ea - eg;
+                        let difKm = ka - kg;
+                        tabela += `<tr>
+                            <td><span class="badge-dia">${nomeDia(d)}</span></td>
+                            <td class="badge-data">${d}</td>
+                            <td><strong>${ea}</strong></td>
+                            <td><strong>${eg}</strong></td>
+                            <td class="${saldoEnt>=0?'positivo':'negativo'}">${saldoEnt>=0?'Ariel +'+saldoEnt:'Gordinho +'+Math.abs(saldoEnt)}</td>
+                            <td>${ka}</td>
+                            <td>${kg}</td>
+                            <td class="${difKm>=0?'positivo':'negativo'}">${difKm>=0?'Ariel +'+difKm+' km':'Gordinho +'+Math.abs(difKm)+' km'}</td>
+                        </tr>`;
+                    });
+                }
+                let saldoTotalEnt = totalEntA - totalEntG;
+                let difTotalKm = totalKmA - totalKmG;
+                tabela += `</tbody><tfoot><tr>
+                    <th colspan="2">🔢 TOTAL</th>
+                    <th>${totalEntA}</th><th>${totalEntG}</th>
+                    <th class="${saldoTotalEnt>=0?'positivo':'negativo'}">${saldoTotalEnt>=0?'Ariel +'+saldoTotalEnt:'Gordinho +'+Math.abs(saldoTotalEnt)}</th>
+                    <th>${totalKmA}</th><th>${totalKmG}</th>
+                    <th class="${difTotalKm>=0?'positivo':'negativo'}">${difTotalKm>=0?'Ariel +'+difTotalKm:'Gordinho +'+Math.abs(difTotalKm)} km</th>
+                </tr></tfoot></table>`;
+                document.getElementById("historico").innerHTML = tabela;
+
+                // Resumo da semana
+                let saldoEfetivo = saldoTotalEnt + banco.acumulado;
+                let sugestao = '';
+                if (difTotalKm !== 0) {
+                    let quemVantagem = difTotalKm > 0 ? 'Ariel' : 'Gordinho';
+                    let kmVantagem = Math.abs(difTotalKm);
+                    let pontosEquivalentes = Math.floor(kmVantagem / 40);
+                    sugestao = `
+                    <div class="sugestao-box">
+                        💡 <strong>Sugestão por km:</strong> ${quemVantagem} rodou <strong>${kmVantagem} km a mais</strong> nesta semana. Isso equivale a aproximadamente <strong>${pontosEquivalentes} ponto(s)</strong> de vantagem se fosse convertido em entregas de 40 km. Considere isso ao planejar as próximas rotas.
+                    </div>`;
+                }
+                document.getElementById("resumo").innerHTML = `
+                <h2>📊 Resumo da Semana</h2>
+                <div class="valor-principal ${saldoEfetivo>=0?'positivo':'negativo'}">
+                    ${saldoEfetivo>=0?'🟢 Ariel +'+saldoEfetivo:'🔴 Gordinho +'+Math.abs(saldoEfetivo)}
+                </div>
+                <div class="sub-info">Entregas: Ariel ${totalEntA} × Gordinho ${totalEntG} (saldo: ${saldoTotalEnt>=0?'+'+saldoTotalEnt:saldoTotalEnt})</div>
+                <div class="sub-info">Km total: Ariel ${totalKmA} km × Gordinho ${totalKmG} km</div>
+                ${sugestao}
+                <div style="margin-top:12px; font-size:0.8rem; color:#5c7090;">🔄 Acúmulo anterior: ${banco.acumulado>=0?'Ariel +'+banco.acumulado:'Gordinho +'+Math.abs(banco.acumulado)}</div>
+                `;
+
+                document.getElementById("acumulado").innerHTML = `
+                <h2>🏆 Acumulado Total</h2>
+                <div class="valor-principal ${banco.acumulado>=0?'positivo':'negativo'}">
+                    ${banco.acumulado>=0?'🟢 Ariel +'+banco.acumulado:'🔴 Gordinho +'+Math.abs(banco.acumulado)}
+                </div>
+                <div class="sub-info">Última semana fechada: ${banco.ultimaSemanaFechada || 'nenhuma'}</div>
+                `;
+            }
+
+            document.getElementById("dataManual").value = hoje();
+            render();
+        })();
+    </script>
+</body>
+</html>
